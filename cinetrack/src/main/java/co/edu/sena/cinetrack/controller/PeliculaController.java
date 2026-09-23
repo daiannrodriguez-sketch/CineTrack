@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
+import java.util.NoSuchElementException;
+
 
 import java.util.List;
 
@@ -31,8 +34,8 @@ public class PeliculaController {
     }
 
     // POST /peliculas
-    @PostMapping
-    public ResponseEntity<?> guardar(@RequestBody Pelicula pelicula) {
+@PostMapping
+public ResponseEntity<?> guardar(@Valid @RequestBody Pelicula pelicula) {
         try {
             Pelicula nuevaPelicula = peliculaService.guardar(pelicula);
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevaPelicula);
@@ -41,17 +44,28 @@ public class PeliculaController {
         }
     }
 
-    // DELETE /peliculas/{id}
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+// DELETE /peliculas/{id}
+@DeleteMapping("/{id}")
+public ResponseEntity<?> eliminar(@PathVariable Long id) {
+    try {
         peliculaService.eliminar(id);
         return ResponseEntity.noContent().build();
+    } catch (NoSuchElementException e) {
+        return ResponseEntity.notFound().build();
     }
-
-    @PutMapping("/{id}")
-public ResponseEntity<Pelicula> actualizar(@PathVariable Long id, @RequestBody Pelicula pelicula) {
-    pelicula.setId(id);
-    Pelicula actualizada = peliculaService.guardar(pelicula); // O peliculaService.actualizar(id, pelicula)
-    return ResponseEntity.ok(actualizada);
 }
+
+// PUT /peliculas/{id}
+@PutMapping("/{id}")
+public ResponseEntity<?> actualizar(@PathVariable Long id, @Valid @RequestBody Pelicula pelicula) {
+    try {
+        Pelicula actualizada = peliculaService.actualizar(id, pelicula);
+        return ResponseEntity.ok(actualizada);
+    } catch (NoSuchElementException e) {
+        return ResponseEntity.notFound().build();
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}
+
 }

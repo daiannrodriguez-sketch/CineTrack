@@ -7,6 +7,32 @@
 
   <h1>🎬 CineTrack - Catálogo de Películas</h1>
   <p style="color: green;"><strong>Backend status:</strong> Conectado a http://localhost:8080/peliculas</p>
+ 
+  <!-- BUSCADOR TMDB -->
+<div style="background-color: #e8f0fe; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+  <label><strong>🔍 Buscar película en TMDB (autocompletar):</strong></label><br>
+  <div style="display: flex; gap: 10px; margin-top: 5px;">
+    <input type="text" [(ngModel)]="tituloBusqueda" name="tituloBusqueda"
+           placeholder="Ej: Matrix" style="flex: 1; padding: 5px;">
+    <button type="button" (click)="buscarEnTmdb()" style="background-color: #17a2b8; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+      Buscar
+    </button>
+  </div>
+
+  <p *ngIf="buscando">Buscando...</p>
+
+  <div *ngIf="resultadosTmdb.length > 0" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+    <div *ngFor="let r of resultadosTmdb" (click)="seleccionarResultadoTmdb(r)"
+         style="cursor: pointer; width: 100px; text-align: center;">
+      <img [src]="r.imagenUrl || 'https://via.placeholder.com/100x150'" style="width: 100%; border-radius: 4px;">
+      <p style="font-size: 12px;">{{ r.titulo }} ({{ r.anio }})</p>
+    </div>
+  </div>
+</div>
+
+
+
+
 
   <!-- FORMULARIO POST / PUT -->
   <div style="background-color: #f0f4f8; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
