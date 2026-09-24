@@ -13,7 +13,12 @@
 
   <span class="toolbar-spacer"></span>
 
-  <span class="backend-badge">
-    <span class="dot"></span> Backend conectado
+  <span class="backend-badge"
+        [class.backend-badge--off]="estadoBackend.conectado() === false"
+        [class.backend-badge--check]="estadoBackend.conectado() === null">
+    <span class="dot"></span>
+    @if (estadoBackend.conectado() === null) { Comprobando servidor... }
+    @else if (estadoBackend.conectado()) { Backend conectado }
+    @else { Backend sin conexión }
   </span>
 </mat-toolbar>

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { EstadoBackendService } from '../../services/estado-backend.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,4 +11,6 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [RouterLink, RouterLinkActive, MatToolbarModule, MatButtonModule, MatIconModule],
   templateUrl: './navbar.component.html'
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+  estadoBackend = inject(EstadoBackendService);
+}

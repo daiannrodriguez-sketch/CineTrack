@@ -106,6 +106,8 @@ code {
   background: var(--ct-success);
   box-shadow: 0 0 8px var(--ct-success);
 }
+.backend-badge--off .dot { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+.backend-badge--check .dot { background: #9ca3af; box-shadow: none; }
 .nav-activo { background: rgba(255,255,255,0.14); border-radius: 8px; }
 
 /* Botones */

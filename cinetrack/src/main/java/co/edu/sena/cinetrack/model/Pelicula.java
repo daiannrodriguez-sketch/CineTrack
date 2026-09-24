@@ -16,6 +16,8 @@ public class Pelicula {
 
     private String genero;
     private String resenaPersonal;
+    @Min(value = 1888, message = "El año debe ser 1888 o posterior")
+    @Max(value = 2100, message = "El año no es válido")
     private int anio;
 
     @Column(length = 1000)
@@ -23,11 +25,13 @@ public class Pelicula {
 
     private String imagenUrl;
 
+    @NotNull(message = "El estado es obligatorio")
     @Enumerated(EnumType.STRING)
     private EstadoPelicula estado; // PENDIENTE, VIENDO, VISTA
 
-    @Min(value = 1, message = "La calificación mínima es 1.0")
-    @Max(value = 5, message = "La calificación máxima es 5.0")
+    // 0 = sin calificar (permitido en PENDIENTE / VIENDO). Si se califica: 1.0 a 5.0
+    @DecimalMin(value = "0.0", message = "La calificación no puede ser negativa")
+    @DecimalMax(value = "5.0", message = "La calificación máxima es 5.0")
     private double calificacionPersonal;
 
     public Pelicula() {}

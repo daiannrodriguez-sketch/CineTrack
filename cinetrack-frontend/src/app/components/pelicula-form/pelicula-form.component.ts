@@ -7,6 +7,7 @@ import { TmdbService } from '../../services/tmdb.service';
 import { NotificacionService } from '../../services/notificacion.service';
 import { Pelicula } from '../../models/pelicula';
 import { TmdbResultado } from '../../models/tmdbresultado';
+import { mensajeDeError } from '../../services/error-mensaje';
 
 @Component({
   selector: 'app-pelicula-form',
@@ -40,8 +41,9 @@ export class PeliculaFormComponent implements OnInit {
           this.nuevaPelicula = p;
           this.cdr.markForCheck();
         },
-        error: () => {
-          this.notificacionService.mostrar('❌ No se encontró esa película', 'error');
+        error: (err) => {
+          this.notificacionService.mostrar(
+            '❌ ' + mensajeDeError(err, 'No se pudo cargar la película'), 'error');
           this.router.navigate(['/peliculas']);
         }
       });
@@ -57,7 +59,7 @@ export class PeliculaFormComponent implements OnInit {
       sinopsis: '',
       imagenUrl: '',
       estado: 'PENDIENTE',
-      calificacionPersonal: 5.0
+      calificacionPersonal: 0
     };
   }
 
@@ -68,8 +70,9 @@ export class PeliculaFormComponent implements OnInit {
           this.notificacionService.mostrar('✨ Película actualizada al instante');
           this.router.navigate(['/peliculas']);
         },
-        error: () => {
-          this.notificacionService.mostrar('❌ Error al actualizar. Revisa tu conexión con el servidor.', 'error');
+        error: (err) => {
+          this.notificacionService.mostrar(
+            '❌ ' + mensajeDeError(err, 'No fue posible actualizar la película.'), 'error');
           this.cdr.markForCheck();
         }
       });
@@ -79,8 +82,9 @@ export class PeliculaFormComponent implements OnInit {
           this.notificacionService.mostrar('✅ Película registrada con éxito');
           this.router.navigate(['/peliculas']);
         },
-        error: () => {
-          this.notificacionService.mostrar('❌ Error al guardar. Revisa tu conexión con el servidor.', 'error');
+        error: (err) => {
+          this.notificacionService.mostrar(
+            '❌ ' + mensajeDeError(err, 'No fue posible guardar la película.'), 'error');
           this.cdr.markForCheck();
         }
       });
@@ -101,8 +105,10 @@ export class PeliculaFormComponent implements OnInit {
         this.buscando = false;
         this.cdr.markForCheck();
       },
-      error: () => {
-        this.notificacionService.mostrar('❌ TMDB no respondió. Puedes seguir llenando el formulario a mano.', 'error');
+      error: (err) => {
+        this.notificacionService.mostrar(
+          '❌ ' + mensajeDeError(err, 'No fue posible buscar en TMDB.') +
+          ' Puedes seguir llenando el formulario a mano.', 'error');
         this.buscando = false;
         this.cdr.markForCheck();
       }

@@ -17,7 +17,7 @@ public class TmdbController {
         this.tmdbService = tmdbService;
     }
 
-    // GET /tmdb/buscar?titulo=matrix
+    // GET /tmdb/buscar?titulo=matrix -> 200 | 400 | 503 (TMDB no disponible)
     @GetMapping("/buscar")
     public ResponseEntity<List<TmdbResultado>> buscar(@RequestParam String titulo) {
         return ResponseEntity.ok(tmdbService.buscarPeliculas(titulo));

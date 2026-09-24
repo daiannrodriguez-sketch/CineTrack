@@ -9,7 +9,7 @@
       <span class="movie-card__badge">{{ pelicula.estado }}</span>
 
       <p class="detail-meta"><strong>Género:</strong> {{ pelicula.genero }}</p>
-      <p class="detail-meta"><strong>Calificación:</strong> {{ pelicula.calificacionPersonal }} / 5.0</p>
+      <p class="detail-meta"><strong>Calificación:</strong> {{ pelicula.calificacionPersonal ? pelicula.calificacionPersonal + ' / 5.0' : 'Sin calificar' }}</p>
       <p class="detail-meta"><strong>Sinopsis:</strong> {{ pelicula.sinopsis }}</p>
 
       <div class="detail-resena" *ngIf="pelicula.resenaPersonal">

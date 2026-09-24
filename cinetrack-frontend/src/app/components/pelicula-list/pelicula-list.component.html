@@ -25,7 +25,7 @@
     <div class="movie-card__body">
       <span class="movie-card__badge">{{ p.estado }}</span>
       <p class="movie-card__meta"><strong>Género:</strong> {{ p.genero }}</p>
-      <p class="movie-card__meta"><strong>Calificación:</strong> {{ p.calificacionPersonal }} / 5.0</p>
+      <p class="movie-card__meta"><strong>Calificación:</strong> {{ p.calificacionPersonal ? p.calificacionPersonal + ' / 5.0' : 'Sin calificar' }}</p>
 
       <p class="movie-card__resena" *ngIf="p.resenaPersonal">
         "{{ p.resenaPersonal }}"
