@@ -1,7 +1,7 @@
 export interface Pelicula {
   id?: number;
   titulo: string;
-  reseñaPersonal: string;
+  resenaPersonal: string;
   genero: string;
   anio: number;
   sinopsis: string;

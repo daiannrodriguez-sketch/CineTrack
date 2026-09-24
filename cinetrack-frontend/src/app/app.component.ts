@@ -5,6 +5,8 @@ import { PeliculaService } from './services/pelicula.services';
 import { Pelicula } from './models/pelicula';
 import { TmdbService } from './services/tmdb.service';
 import { TmdbResultado } from './models/tmdbresultado';
+import { ResenaService } from './services/resena.service';
+import { Resena } from './models/resena';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +18,18 @@ export class AppComponent implements OnInit {
   peliculaService = inject(PeliculaService);
   tmdbService = inject(TmdbService);
   private cdr = inject(ChangeDetectorRef);
+  resenaService = inject(ResenaService);
+
+resenasPorPelicula: { [peliculaId: number]: Resena[] } = {};
+resenasVisibles: { [peliculaId: number]: boolean } = {};
+peliculaIdParaResena: number | null = null;
+
+nuevaResena: Resena = {
+  peliculaId: 0,
+  fecha: '',
+  calificacion: 5,
+  descripcion: ''
+};
 
   peliculas: Pelicula[] = [];
   editando: boolean = false;
@@ -27,7 +41,7 @@ export class AppComponent implements OnInit {
 
   nuevaPelicula: Pelicula = {
     titulo: '',
-    reseñaPersonal: '',
+    resenaPersonal: '',
     genero: '',
     anio: 2024,
     sinopsis: '',
@@ -113,7 +127,7 @@ export class AppComponent implements OnInit {
     this.editando = false;
     this.nuevaPelicula = {
       titulo: '',
-      reseñaPersonal: '',
+      resenaPersonal: '',
       genero: '',
       anio: 2024,
       sinopsis: '',
@@ -160,4 +174,67 @@ export class AppComponent implements OnInit {
     this.resultadosTmdb = [];
     this.tituloBusqueda = '';
   }
+
+  // --- Reseñas ---
+
+toggleResenas(peliculaId: number): void {
+  this.resenasVisibles[peliculaId] = !this.resenasVisibles[peliculaId];
+
+  if (this.resenasVisibles[peliculaId] && !this.resenasPorPelicula[peliculaId]) {
+    this.cargarResenas(peliculaId);
+  }
+}
+
+cargarResenas(peliculaId: number): void {
+  this.resenaService.obtenerPorPelicula(peliculaId).subscribe({
+    next: (res) => {
+      this.resenasPorPelicula[peliculaId] = res;
+      this.cdr.markForCheck();
+    },
+    error: () => {
+      console.error('Error al cargar reseñas');
+      this.cdr.markForCheck();
+    }
+  });
+}
+
+prepararNuevaResena(peliculaId: number): void {
+  this.peliculaIdParaResena = peliculaId;
+  this.nuevaResena = {
+    peliculaId: peliculaId,
+    fecha: new Date().toISOString().substring(0, 10),
+    calificacion: 5,
+    descripcion: ''
+  };
+}
+
+guardarResena(): void {
+  if (!this.peliculaIdParaResena) return;
+
+  this.resenaService.crear(this.nuevaResena).subscribe({
+    next: () => {
+      this.mostrarNotificacion('📝 Reseña agregada');
+      this.cargarResenas(this.peliculaIdParaResena!);
+      this.peliculaIdParaResena = null;
+      this.cdr.markForCheck();
+    },
+    error: () => {
+      this.mostrarNotificacion('❌ Error al guardar la reseña');
+      this.cdr.markForCheck();
+    }
+  });
+}
+
+eliminarResena(id: number, peliculaId: number): void {
+  this.resenaService.eliminar(id).subscribe({
+    next: () => {
+      this.cargarResenas(peliculaId);
+      this.cdr.markForCheck();
+    },
+    error: () => {
+      console.error('Error al eliminar reseña');
+      this.cdr.markForCheck();
+    }
+  });
+}
 }

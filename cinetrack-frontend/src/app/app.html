@@ -1,5 +1,5 @@
 <div style="padding: 20px; font-family: sans-serif; max-width: 900px; margin: 0 auto;">
-  
+
   <!-- BANNER NOTIFICACIÓN EN LA PARTE SUPERIOR -->
   <div *ngIf="mensajeNotificacion" style="background-color: #28a745; color: white; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-weight: bold; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
     {{ mensajeNotificacion }}
@@ -7,34 +7,33 @@
 
   <h1>🎬 CineTrack - Catálogo de Películas</h1>
   <p style="color: green;"><strong>Backend status:</strong> Conectado a http://localhost:8080/peliculas</p>
- 
+
   <!-- BUSCADOR TMDB -->
-<div style="background-color: #e8f0fe; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-  <label><strong>🔍 Buscar película en TMDB (autocompletar):</strong></label><br>
-  <div style="display: flex; gap: 10px; margin-top: 5px;">
-    <input type="text" [(ngModel)]="tituloBusqueda" name="tituloBusqueda"
-           placeholder="Ej: Matrix" style="flex: 1; padding: 5px;">
-    <button type="button" (click)="buscarEnTmdb()" style="background-color: #17a2b8; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
-      Buscar
-    </button>
-  </div>
+  <div style="background-color: #e8f0fe; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+    <label><strong>🔍 Buscar película en TMDB (autocompletar):</strong></label><br>
+    <div style="display: flex; gap: 10px; margin-top: 5px;">
+      <input type="text" [(ngModel)]="tituloBusqueda" name="tituloBusqueda"
+             placeholder="Ej: Matrix" style="flex: 1; padding: 5px;">
+      <button type="button" (click)="buscarEnTmdb()" style="background-color: #17a2b8; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+        Buscar
+      </button>
+    </div>
 
-  <p *ngIf="buscando">Buscando...</p>
+    <p *ngIf="buscando">Buscando...</p>
 
-  <div *ngIf="resultadosTmdb.length > 0" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
-    <div *ngFor="let r of resultadosTmdb" (click)="seleccionarResultadoTmdb(r)"
-         style="cursor: pointer; width: 100px; text-align: center;">
-      <img [src]="r.imagenUrl || 'https://via.placeholder.com/100x150'" style="width: 100%; border-radius: 4px;">
-      <p style="font-size: 12px;">{{ r.titulo }} ({{ r.anio }})</p>
+    <div *ngIf="resultadosTmdb.length > 0" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+      <div *ngFor="let r of resultadosTmdb" (click)="seleccionarResultadoTmdb(r)"
+           style="cursor: pointer; width: 100px; text-align: center;">
+        <img [src]="r.imagenUrl || 'https://via.placeholder.com/100x150'" style="width: 100%; border-radius: 4px;">
+        <p style="font-size: 12px;">{{ r.titulo }} ({{ r.anio }})</p>
+      </div>
     </div>
   </div>
-</div>
-
 
   <!-- FORMULARIO POST / PUT -->
   <div style="background-color: #adb9c4; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
     <h2>{{ editando ? '✏️ Editar Película' : '➕ Registrar Nueva Película' }}</h2>
-    
+
     <form (ngSubmit)="guardarPelicula()" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
       <div>
         <label>Título:</label><br>
@@ -42,7 +41,7 @@
       </div>
       <div>
         <label>Mi reseña:</label><br>
-        <textarea [(ngModel)]="nuevaPelicula.reseñaPersonal" name="reseñaPersonal" rows="3" style="width: 100%; padding: 5px;"></textarea>
+        <textarea [(ngModel)]="nuevaPelicula.resenaPersonal" name="resenaPersonal" rows="3" style="width: 100%; padding: 5px;"></textarea>
       </div>
       <div>
         <label>Género:</label><br>
@@ -93,14 +92,61 @@
       <img [src]="p.imagenUrl || 'https://via.placeholder.com/150'" alt="{{ p.titulo }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 4px;">
       <h3>{{ p.titulo }} ({{ p.anio }})</h3>
       <p><strong>Género:</strong> {{ p.genero }}</p>
-      <p><strong>Reseña:</strong> {{ p.reseñaPersonal }}</p>
+      <p><strong>Reseña:</strong> {{ p.resenaPersonal }}</p>
       <p><strong>Estado:</strong> <span style="font-weight: bold; color: #007bff;">{{ p.estado }}</span></p>
       <p><strong>Calificación:</strong> ⭐ {{ p.calificacionPersonal }} / 5.0</p>
-      
+
       <div style="display: flex; gap: 5px; margin-top: 10px;">
         <button (click)="seleccionarParaEditar(p)" style="background-color: #ffc107; color: black; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; flex: 1;">✏️ Editar</button>
         <button (click)="eliminarPelicula(p.id)" style="background-color: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; flex: 1;">🗑️ Eliminar</button>
       </div>
+
+      <!-- RESEÑAS DE ESTA PELÍCULA -->
+      <div style="margin-top: 12px; border-top: 1px solid #eee; padding-top: 10px;">
+        <button type="button" (click)="toggleResenas(p.id!)" style="background: none; border: none; color: #007bff; cursor: pointer; padding: 0; font-size: 13px;">
+          {{ resenasVisibles[p.id!] ? '▲ Ocultar reseñas' : '▼ Ver reseñas' }}
+        </button>
+
+        <div *ngIf="resenasVisibles[p.id!]" style="margin-top: 8px;">
+
+          <div *ngFor="let r of (resenasPorPelicula[p.id!] || [])" style="background-color: #f8f9fa; padding: 8px; border-radius: 4px; margin-bottom: 6px; font-size: 13px;">
+            <strong>⭐ {{ r.calificacion }}/5</strong> — {{ r.fecha }}
+            <p style="margin: 4px 0 0 0;">{{ r.descripcion }}</p>
+            <button type="button" (click)="eliminarResena(r.id!, p.id!)" style="background: none; border: none; color: #dc3545; cursor: pointer; font-size: 12px; padding: 0; margin-top: 4px;">
+              Eliminar reseña
+            </button>
+          </div>
+
+          <div *ngIf="(resenasPorPelicula[p.id!] || []).length === 0">
+            <p style="font-size: 13px; color: #888;">Aún no hay reseñas.</p>
+          </div>
+
+          <!-- FORMULARIO MINI PARA NUEVA RESEÑA -->
+          <div *ngIf="peliculaIdParaResena !== p.id">
+            <button type="button" (click)="prepararNuevaResena(p.id!)" style="background-color: #6f42c1; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+              + Agregar reseña
+            </button>
+          </div>
+
+          <div *ngIf="peliculaIdParaResena === p.id" style="margin-top: 8px; background-color: #fff3cd; padding: 8px; border-radius: 4px;">
+            <label style="font-size: 12px;">Calificación:</label>
+            <input type="number" step="0.5" min="1" max="5" [(ngModel)]="nuevaResena.calificacion" name="calResena" style="width: 100%; padding: 4px; margin-bottom: 5px;">
+
+            <label style="font-size: 12px;">Fecha:</label>
+            <input type="date" [(ngModel)]="nuevaResena.fecha" name="fechaResena" style="width: 100%; padding: 4px; margin-bottom: 5px;">
+
+            <label style="font-size: 12px;">Descripción:</label>
+            <textarea [(ngModel)]="nuevaResena.descripcion" name="descResena" rows="2" style="width: 100%; padding: 4px; margin-bottom: 5px;"></textarea>
+
+            <div style="display: flex; gap: 5px;">
+              <button type="button" (click)="guardarResena()" style="background-color: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Guardar</button>
+              <button type="button" (click)="peliculaIdParaResena = null" style="background-color: #6c757d; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">Cancelar</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

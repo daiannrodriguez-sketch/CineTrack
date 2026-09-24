@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PeliculaRepository extends JpaRepository<Pelicula, Long> {
     // Método para validar la Regla de Negocio 1 (Evitar duplicados) al CREAR
-    boolean existsByTituloAndAño(String titulo, int anio);
+    boolean existsByTituloAndAnio(String titulo, int anio);
 
     // NUEVO: igual, pero excluyendo el propio registro (necesario al ACTUALIZAR)
-    boolean existsByTituloAndAñoAndIdNot(String titulo, int anio, Long id);
+    boolean existsByTituloAndAnioAndIdNot(String titulo, int anio, Long id);
 }

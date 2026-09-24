@@ -16,7 +16,7 @@ public class Pelicula {
 
     private String director;
     private String genero;
-    private String reseñaPersonal;
+    private String resenaPersonal;
     private int anio;
 
     @Column(length = 1000)
@@ -40,9 +40,6 @@ public class Pelicula {
     public String getTitulo() { return titulo; }
     public void setTitulo(String titulo) { this.titulo = titulo; }
 
-    public String getDirector() { return director; }
-    public void setDirector(String director) { this.director = director; }
-
     public String getGenero() { return genero; }
     public void setGenero(String genero) { this.genero = genero; }
 
@@ -58,9 +55,9 @@ public class Pelicula {
     public double getCalificacionPersonal() { return calificacionPersonal; }
     public void setCalificacionPersonal(double calificacionPersonal) { this.calificacionPersonal = calificacionPersonal; }
 
-    public String getReseñaPersonal() { return reseñaPersonal; }
-public void setReseñaPersonal(String reseñaPersonal) { this.reseñaPersonal = reseñaPersonal; }
+    public String getResenaPersonal() { return resenaPersonal; }
+    public void setResenaPersonal(String resenaPersonal) { this.resenaPersonal = resenaPersonal; }
 
-public int getAnio() { return anio; }
-public void setAnio(int anio) { this.anio = anio; }
+    public int getAnio() { return anio; }
+    public void setAnio(int anio) { this.anio = anio; }
 }
