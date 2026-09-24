@@ -10,4 +10,5 @@ import java.util.List;
 public interface ResenaRepository extends JpaRepository<Resena, Long> {
     // Todas las reseñas de una película específica
     List<Resena> findByPeliculaId(Long peliculaId);
+    List<Resena> findTop5ByOrderByIdDesc();
 }
