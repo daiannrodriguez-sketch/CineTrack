@@ -1,0 +1,67 @@
+<h2>{{ editando ? '✏️ Editar Película' : '➕ Registrar Nueva Película' }}</h2>
+
+<div style="background-color: #e8f0fe; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+  <label><strong>🔍 Buscar película en TMDB (autocompletar):</strong></label><br>
+  <div style="display: flex; gap: 10px; margin-top: 5px;">
+    <input type="text" [(ngModel)]="tituloBusqueda" name="tituloBusqueda"
+           placeholder="Ej: Matrix" style="flex: 1; padding: 5px;">
+    <button type="button" (click)="buscarEnTmdb()" style="background-color: #17a2b8; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+      Buscar
+    </button>
+  </div>
+
+  <p *ngIf="buscando">Buscando...</p>
+
+  <div *ngIf="resultadosTmdb.length > 0" style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px;">
+    <div *ngFor="let r of resultadosTmdb" (click)="seleccionarResultadoTmdb(r)"
+         style="cursor: pointer; width: 100px; text-align: center;">
+      <img [src]="r.imagenUrl || 'https://via.placeholder.com/100x150'" style="width: 100%; border-radius: 4px;">
+      <p style="font-size: 12px;">{{ r.titulo }} ({{ r.anio }})</p>
+    </div>
+  </div>
+</div>
+
+<div style="background-color: #adb9c4; padding: 20px; border-radius: 8px;">
+  <form (ngSubmit)="guardarPelicula()" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+    <div>
+      <label>Título:</label><br>
+      <input type="text" [(ngModel)]="nuevaPelicula.titulo" name="titulo" required style="width: 100%; padding: 5px;">
+    </div>
+    <div>
+      <label>Mi reseña:</label><br>
+      <textarea [(ngModel)]="nuevaPelicula.resenaPersonal" name="resenaPersonal" rows="3" style="width: 100%; padding: 5px;"></textarea>
+    </div>
+    <div>
+      <label>Género:</label><br>
+      <input type="text" [(ngModel)]="nuevaPelicula.genero" name="genero" style="width: 100%; padding: 5px;">
+    </div>
+    <div>
+      <label>Año:</label><br>
+      <input type="number" [(ngModel)]="nuevaPelicula.anio" name="anio" style="width: 100%; padding: 5px;">
+    </div>
+    <div style="grid-column: span 2;">
+      <label>URL Afiche/Imagen:</label><br>
+      <input type="text" [(ngModel)]="nuevaPelicula.imagenUrl" name="imagenUrl" style="width: 100%; padding: 5px;">
+    </div>
+    <div>
+      <label>Estado:</label><br>
+      <select [(ngModel)]="nuevaPelicula.estado" name="estado" style="width: 100%; padding: 5px;">
+        <option value="PENDIENTE">PENDIENTE</option>
+        <option value="VIENDO">VIENDO</option>
+        <option value="VISTA">VISTA</option>
+      </select>
+    </div>
+    <div>
+      <label>Calificación (1.0 a 5.0):</label><br>
+      <input type="number" step="0.5" [(ngModel)]="nuevaPelicula.calificacionPersonal" name="calificacionPersonal" min="1" max="5" style="width: 100%; padding: 5px;">
+    </div>
+    <div style="grid-column: span 2; margin-top: 10px; display: flex; gap: 10px;">
+      <button type="submit" style="background-color: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+        {{ editando ? 'Actualizar Película' : 'Guardar Película' }}
+      </button>
+      <button type="button" (click)="cancelar()" style="background-color: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer;">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

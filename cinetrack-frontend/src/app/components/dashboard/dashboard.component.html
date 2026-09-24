@@ -1,0 +1,31 @@
+<h2>📊 Dashboard</h2>
+
+<p *ngIf="cargando">Cargando estadísticas...</p>
+<p *ngIf="!cargando && !stats">No se pudo conectar con el servidor.</p>
+
+<div *ngIf="stats" style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
+  <div style="border:1px solid #ccc; border-radius:8px; padding:15px; min-width:150px;">
+    <h3>{{ stats.totalPeliculas }}</h3><p>Total de películas</p>
+  </div>
+  <div style="border:1px solid #ccc; border-radius:8px; padding:15px; min-width:150px;">
+    <h3>{{ stats.vistas }}</h3><p>Vistas</p>
+  </div>
+  <div style="border:1px solid #ccc; border-radius:8px; padding:15px; min-width:150px;">
+    <h3>{{ stats.pendientes }}</h3><p>Pendientes</p>
+  </div>
+  <div style="border:1px solid #ccc; border-radius:8px; padding:15px; min-width:150px;">
+    <h3>{{ stats.viendo }}</h3><p>Viendo</p>
+  </div>
+  <div style="border:1px solid #f5c6cb; background:#f8d7da; border-radius:8px; padding:15px; min-width:150px;">
+    <h3>⚠️ {{ stats.alertas }}</h3><p>Vistas sin reseña</p>
+  </div>
+</div>
+
+<h3 style="margin-top:25px;">Últimas reseñas</h3>
+<ul>
+  <li *ngFor="let op of stats?.ultimasOperaciones">
+    <strong>{{ op.peliculaTitulo }}</strong> — ⭐ {{ op.calificacion }} ({{ op.fecha }}): {{ op.descripcion }}
+  </li>
+</ul>
+
+<a routerLink="/peliculas">Ver catálogo completo →</a>
