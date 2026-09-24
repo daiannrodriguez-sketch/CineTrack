@@ -7,6 +7,7 @@ import { ResenaService } from '../../services/resena.service';
 import { NotificacionService } from '../../services/notificacion.service';
 import { Pelicula } from '../../models/pelicula';
 import { Resena } from '../../models/resena';
+import { mensajeDeError } from '../../services/error-mensaje';
 
 @Component({
   selector: 'app-pelicula-detalle',
@@ -55,8 +56,9 @@ export class PeliculaDetalleComponent implements OnInit {
         this.pelicula = p;
         this.cdr.markForCheck();
       },
-      error: () => {
-        this.notificacionService.mostrar('❌ No se encontró esa película', 'error');
+      error: (err) => {
+        this.notificacionService.mostrar(
+          '❌ ' + mensajeDeError(err, 'No se pudo cargar la película'), 'error');
         this.router.navigate(['/peliculas']);
       }
     });
@@ -68,8 +70,9 @@ export class PeliculaDetalleComponent implements OnInit {
         this.resenas = res;
         this.cdr.markForCheck();
       },
-      error: () => {
-        console.error('Error al cargar reseñas');
+      error: (err) => {
+        this.notificacionService.mostrar(
+          '❌ ' + mensajeDeError(err, 'No se pudieron cargar las reseñas.'), 'error');
         this.cdr.markForCheck();
       }
     });
@@ -86,7 +89,11 @@ export class PeliculaDetalleComponent implements OnInit {
           this.notificacionService.mostrar('🗑️ Película eliminada');
           this.router.navigate(['/peliculas']);
         },
-        error: () => console.error('Error al eliminar')
+        error: (err) => {
+          this.notificacionService.mostrar(
+            '❌ ' + mensajeDeError(err, 'No se pudo eliminar la película.'), 'error');
+          this.cdr.markForCheck();
+        }
       });
     }
   }
@@ -107,8 +114,9 @@ export class PeliculaDetalleComponent implements OnInit {
         this.mostrandoFormResena = false;
         this.cargarResenas();
       },
-      error: () => {
-        this.notificacionService.mostrar('❌ Error al guardar la reseña. Revisa tu conexión con el servidor.', 'error');
+      error: (err) => {
+        this.notificacionService.mostrar(
+          '❌ ' + mensajeDeError(err, 'No fue posible guardar la reseña.'), 'error');
         this.cdr.markForCheck();
       }
     });
@@ -118,7 +126,11 @@ export class PeliculaDetalleComponent implements OnInit {
     if (!id) return;
     this.resenaService.eliminar(id).subscribe({
       next: () => this.cargarResenas(),
-      error: () => console.error('Error al eliminar reseña')
+      error: (err) => {
+        this.notificacionService.mostrar(
+          '❌ ' + mensajeDeError(err, 'No se pudo eliminar la reseña.'), 'error');
+        this.cdr.markForCheck();
+      }
     });
   }
 }

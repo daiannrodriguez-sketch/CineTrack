@@ -59,16 +59,17 @@ public class PeliculaService {
         peliculaRepository.deleteById(id);
     }
 
-    // NUEVO: se extrajeron las reglas 2 y 3 aquí para reusarlas en guardar() y actualizar()
     private void validarReglasComunes(Pelicula pelicula) {
-        // Regla 2: Calificación en rango válido de 1.0 a 5.0
-        if (pelicula.getCalificacionPersonal() < 1.0 || pelicula.getCalificacionPersonal() > 5.0) {
+        double nota = pelicula.getCalificacionPersonal();
+
+        // Regla 2: si la película se califica, la nota debe estar entre 1.0 y 5.0 (0 = sin calificar)
+        if (nota != 0 && (nota < 1.0 || nota > 5.0)) {
             throw new IllegalArgumentException("La calificación debe estar entre 1.0 y 5.0");
         }
 
-        // Regla 3: No marcar como VISTA sin calificación
-        if (pelicula.getEstado() == EstadoPelicula.VISTA && pelicula.getCalificacionPersonal() <= 0) {
-            throw new IllegalArgumentException("Para marcar como VISTA debes asignar una calificación");
+        // Regla 3: no se puede marcar como VISTA sin calificación
+        if (pelicula.getEstado() == EstadoPelicula.VISTA && nota < 1.0) {
+            throw new IllegalArgumentException("Para marcar como VISTA debes asignar una calificación entre 1.0 y 5.0");
         }
     }
 }

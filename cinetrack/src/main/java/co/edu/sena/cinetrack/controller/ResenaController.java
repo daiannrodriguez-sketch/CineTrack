@@ -25,9 +25,8 @@ public class ResenaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Resena> obtenerPorId(@PathVariable Long id) {
-        return resenaService.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(resenaService.obtenerPorId(id)
+                .orElseThrow(() -> new NoSuchElementException("No existe una reseña con id " + id)));
     }
 
     // GET /resenas/pelicula/{peliculaId} -> todas las reseñas de esa película
@@ -37,34 +36,18 @@ public class ResenaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> guardar(@Valid @RequestBody Resena resena) {
-        try {
-            Resena nueva = resenaService.guardar(resena);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Resena> guardar(@Valid @RequestBody Resena resena) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(resenaService.guardar(resena));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizar(@PathVariable Long id, @Valid @RequestBody Resena resena) {
-        try {
-            Resena actualizada = resenaService.actualizar(id, resena);
-            return ResponseEntity.ok(actualizada);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Resena> actualizar(@PathVariable Long id, @Valid @RequestBody Resena resena) {
+        return ResponseEntity.ok(resenaService.actualizar(id, resena));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> eliminar(@PathVariable Long id) {
-        try {
-            resenaService.eliminar(id);
-            return ResponseEntity.noContent().build();
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        resenaService.eliminar(id);
+        return ResponseEntity.noContent().build();
     }
 }

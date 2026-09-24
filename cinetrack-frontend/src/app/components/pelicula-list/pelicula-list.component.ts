@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { PeliculaService } from '../../services/pelicula.services';
 import { NotificacionService } from '../../services/notificacion.service';
 import { Pelicula } from '../../models/pelicula';
+import { mensajeDeError } from '../../services/error-mensaje';
 
 @Component({
   selector: 'app-pelicula-list',
@@ -62,9 +63,9 @@ export class PeliculaListComponent implements OnInit {
           this.notificacionService.mostrar('🗑️ Película eliminada');
           this.cdr.markForCheck();
         },
-        error: () => {
-          console.error('Error al eliminar');
-          this.notificacionService.mostrar('❌ No se pudo eliminar. Revisa tu conexión con el servidor.', 'error');
+        error: (err) => {
+          this.notificacionService.mostrar(
+            '❌ ' + mensajeDeError(err, 'No se pudo eliminar la película.'), 'error');
           this.cdr.markForCheck();
         }
       });
