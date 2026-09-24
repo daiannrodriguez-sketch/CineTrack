@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
 
   nuevaPelicula: Pelicula = {
     titulo: '',
-    director: '',
+    reseñaPersonal: '',
     genero: '',
     anio: 2024,
     sinopsis: '',
@@ -113,7 +113,7 @@ export class AppComponent implements OnInit {
     this.editando = false;
     this.nuevaPelicula = {
       titulo: '',
-      director: '',
+      reseñaPersonal: '',
       genero: '',
       anio: 2024,
       sinopsis: '',

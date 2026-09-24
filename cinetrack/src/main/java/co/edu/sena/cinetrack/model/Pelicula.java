@@ -16,7 +16,8 @@ public class Pelicula {
 
     private String director;
     private String genero;
-    private int año;
+    private String reseñaPersonal;
+    private int anio;
 
     @Column(length = 1000)
     private String sinopsis;
@@ -45,9 +46,6 @@ public class Pelicula {
     public String getGenero() { return genero; }
     public void setGenero(String genero) { this.genero = genero; }
 
-    public int getAño() { return año; }
-    public void setAño(int año) { this.año = año; }
-
     public String getSinopsis() { return sinopsis; }
     public void setSinopsis(String sinopsis) { this.sinopsis = sinopsis; }
 
@@ -59,4 +57,10 @@ public class Pelicula {
 
     public double getCalificacionPersonal() { return calificacionPersonal; }
     public void setCalificacionPersonal(double calificacionPersonal) { this.calificacionPersonal = calificacionPersonal; }
+
+    public String getReseñaPersonal() { return reseñaPersonal; }
+public void setReseñaPersonal(String reseñaPersonal) { this.reseñaPersonal = reseñaPersonal; }
+
+public int getAnio() { return anio; }
+public void setAnio(int anio) { this.anio = anio; }
 }

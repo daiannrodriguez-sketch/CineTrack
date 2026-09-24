@@ -31,11 +31,8 @@
 </div>
 
 
-
-
-
   <!-- FORMULARIO POST / PUT -->
-  <div style="background-color: #f0f4f8; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+  <div style="background-color: #adb9c4; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
     <h2>{{ editando ? '✏️ Editar Película' : '➕ Registrar Nueva Película' }}</h2>
     
     <form (ngSubmit)="guardarPelicula()" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -44,8 +41,8 @@
         <input type="text" [(ngModel)]="nuevaPelicula.titulo" name="titulo" required style="width: 100%; padding: 5px;">
       </div>
       <div>
-        <label>Director:</label><br>
-        <input type="text" [(ngModel)]="nuevaPelicula.director" name="director" style="width: 100%; padding: 5px;">
+        <label>Mi reseña:</label><br>
+        <textarea [(ngModel)]="nuevaPelicula.reseñaPersonal" name="reseñaPersonal" rows="3" style="width: 100%; padding: 5px;"></textarea>
       </div>
       <div>
         <label>Género:</label><br>
@@ -95,8 +92,8 @@
     <div *ngFor="let p of peliculas" style="border: 1px solid #ccc; padding: 15px; border-radius: 8px; width: 250px; background-color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
       <img [src]="p.imagenUrl || 'https://via.placeholder.com/150'" alt="{{ p.titulo }}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 4px;">
       <h3>{{ p.titulo }} ({{ p.anio }})</h3>
-      <p><strong>Director:</strong> {{ p.director }}</p>
       <p><strong>Género:</strong> {{ p.genero }}</p>
+      <p><strong>Reseña:</strong> {{ p.reseñaPersonal }}</p>
       <p><strong>Estado:</strong> <span style="font-weight: bold; color: #007bff;">{{ p.estado }}</span></p>
       <p><strong>Calificación:</strong> ⭐ {{ p.calificacionPersonal }} / 5.0</p>
       

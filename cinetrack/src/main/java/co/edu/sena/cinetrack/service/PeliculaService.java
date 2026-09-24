@@ -26,7 +26,7 @@ public class PeliculaService {
 
     public Pelicula guardar(Pelicula pelicula) {
         // Regla 1: No registrar títulos duplicados con el mismo año
-        if (peliculaRepository.existsByTituloAndAño(pelicula.getTitulo(), pelicula.getAño())) {
+        if (peliculaRepository.existsByTituloAndAño(pelicula.getTitulo(), pelicula.getAnio())) {
             throw new IllegalArgumentException("La película ya existe en tu catálogo");
         }
 
@@ -41,7 +41,7 @@ public class PeliculaService {
             throw new NoSuchElementException("No existe una película con id " + id);
         }
 
-        if (peliculaRepository.existsByTituloAndAñoAndIdNot(pelicula.getTitulo(), pelicula.getAño(), id)) {
+        if (peliculaRepository.existsByTituloAndAñoAndIdNot(pelicula.getTitulo(), pelicula.getAnio(), id)) {
             throw new IllegalArgumentException("Ya existe otra película con ese título y año");
         }
 
