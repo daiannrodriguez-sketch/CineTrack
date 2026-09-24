@@ -1,13 +1,19 @@
-<nav style="display: flex; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">
-  <a routerLink="/dashboard" routerLinkActive="nav-activo" [routerLinkActiveOptions]="{exact: true}" style="text-decoration: none; color: #007bff; font-weight: bold;">
-    📊 Dashboard
-  </a>
-  <a routerLink="/peliculas" routerLinkActive="nav-activo" [routerLinkActiveOptions]="{exact: true}" style="text-decoration: none; color: #007bff; font-weight: bold;">
-    📋 Catálogo
-  </a>
-  <a routerLink="/peliculas/nueva" routerLinkActive="nav-activo" style="text-decoration: none; color: #007bff; font-weight: bold;">
-    ➕ Nueva película
-  </a>
-</nav>
+<mat-toolbar color="primary" class="app-toolbar">
+  <span class="brand">CineTrack</span>
 
+  <a mat-button routerLink="/dashboard" routerLinkActive="nav-activo" [routerLinkActiveOptions]="{exact: true}">
+    <mat-icon>dashboard</mat-icon> Panel
+  </a>
+  <a mat-button routerLink="/peliculas" routerLinkActive="nav-activo" [routerLinkActiveOptions]="{exact: true}">
+    <mat-icon>movie</mat-icon> Catálogo
+  </a>
+  <a mat-button routerLink="/peliculas/nueva" routerLinkActive="nav-activo">
+    <mat-icon>add</mat-icon> Nueva película
+  </a>
 
+  <span class="toolbar-spacer"></span>
+
+  <span class="backend-badge">
+    <span class="dot"></span> Backend conectado
+  </span>
+</mat-toolbar>

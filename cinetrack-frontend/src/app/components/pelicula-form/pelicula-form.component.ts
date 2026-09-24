@@ -41,7 +41,7 @@ export class PeliculaFormComponent implements OnInit {
           this.cdr.markForCheck();
         },
         error: () => {
-          this.notificacionService.mostrar('❌ No se encontró esa película');
+          this.notificacionService.mostrar('❌ No se encontró esa película', 'error');
           this.router.navigate(['/peliculas']);
         }
       });
@@ -69,7 +69,7 @@ export class PeliculaFormComponent implements OnInit {
           this.router.navigate(['/peliculas']);
         },
         error: () => {
-          this.notificacionService.mostrar('❌ Error al actualizar');
+          this.notificacionService.mostrar('❌ Error al actualizar. Revisa tu conexión con el servidor.', 'error');
           this.cdr.markForCheck();
         }
       });
@@ -80,7 +80,7 @@ export class PeliculaFormComponent implements OnInit {
           this.router.navigate(['/peliculas']);
         },
         error: () => {
-          this.notificacionService.mostrar('❌ Error al guardar');
+          this.notificacionService.mostrar('❌ Error al guardar. Revisa tu conexión con el servidor.', 'error');
           this.cdr.markForCheck();
         }
       });
@@ -102,7 +102,7 @@ export class PeliculaFormComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: () => {
-        this.notificacionService.mostrar('❌ Error al buscar en TMDB');
+        this.notificacionService.mostrar('❌ TMDB no respondió. Puedes seguir llenando el formulario a mano.', 'error');
         this.buscando = false;
         this.cdr.markForCheck();
       }

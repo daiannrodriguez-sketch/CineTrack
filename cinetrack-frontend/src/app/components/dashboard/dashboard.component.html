@@ -1,31 +1,46 @@
-<h2>📊 Dashboard</h2>
+<h2 class="section-title">Panel</h2>
 
-<p *ngIf="cargando">Cargando estadísticas...</p>
-<p *ngIf="!cargando && !stats">No se pudo conectar con el servidor.</p>
+<p *ngIf="cargando" class="loading-text">Cargando estadísticas...</p>
+<p *ngIf="!cargando && !stats" class="loading-text">No se pudo conectar con el servidor.</p>
 
-<div *ngIf="stats" style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 15px;">
-  <div style="border:1px solid #ccc; border-radius:8px; padding:15px; min-width:150px;">
-    <h3>{{ stats.totalPeliculas }}</h3><p>Total de películas</p>
+<div *ngIf="stats" class="stat-grid">
+  <div class="stat-card">
+    <p class="stat-card__value">{{ stats.totalPeliculas }}</p>
+    <p class="stat-card__label">Total de películas</p>
   </div>
-  <div style="border:1px solid #ccc; border-radius:8px; padding:15px; min-width:150px;">
-    <h3>{{ stats.vistas }}</h3><p>Vistas</p>
+  <div class="stat-card stat-card--vistas">
+    <p class="stat-card__value">{{ stats.vistas }}</p>
+    <p class="stat-card__label">Vistas</p>
   </div>
-  <div style="border:1px solid #ccc; border-radius:8px; padding:15px; min-width:150px;">
-    <h3>{{ stats.pendientes }}</h3><p>Pendientes</p>
+  <div class="stat-card stat-card--pendientes">
+    <p class="stat-card__value">{{ stats.pendientes }}</p>
+    <p class="stat-card__label">Pendientes</p>
   </div>
-  <div style="border:1px solid #ccc; border-radius:8px; padding:15px; min-width:150px;">
-    <h3>{{ stats.viendo }}</h3><p>Viendo</p>
+  <div class="stat-card stat-card--viendo">
+    <p class="stat-card__value">{{ stats.viendo }}</p>
+    <p class="stat-card__label">Viendo</p>
   </div>
-  <div style="border:1px solid #f5c6cb; background:#f8d7da; border-radius:8px; padding:15px; min-width:150px;">
-    <h3>⚠️ {{ stats.alertas }}</h3><p>Vistas sin reseña</p>
+  <div class="stat-card stat-card--alertas">
+    <p class="stat-card__value">{{ stats.alertas }}</p>
+    <p class="stat-card__label">Vistas sin reseña</p>
   </div>
 </div>
 
-<h3 style="margin-top:25px;">Últimas reseñas</h3>
-<ul>
-  <li *ngFor="let op of stats?.ultimasOperaciones">
-    <strong>{{ op.peliculaTitulo }}</strong> — ⭐ {{ op.calificacion }} ({{ op.fecha }}): {{ op.descripcion }}
+<h3 class="subsection-title">Últimas reseñas</h3>
+
+<ul class="recent-list" *ngIf="stats?.ultimasOperaciones?.length; else sinResenas">
+  <li class="recent-item" *ngFor="let op of stats?.ultimasOperaciones">
+    <div class="recent-item__info">
+      <strong>{{ op.peliculaTitulo }}</strong>
+      <span class="recent-item__meta">{{ op.fecha }} — {{ op.descripcion }}</span>
+    </div>
+    <span class="recent-item__score">{{ op.calificacion }}/5</span>
   </li>
 </ul>
+<ng-template #sinResenas>
+  <p class="loading-text">Aún no hay reseñas registradas.</p>
+</ng-template>
 
-<a routerLink="/peliculas">Ver catálogo completo →</a>
+<a routerLink="/peliculas" class="btn btn-ghost" style="margin-top: 20px; display:inline-block;">
+  Ver catálogo completo →
+</a>

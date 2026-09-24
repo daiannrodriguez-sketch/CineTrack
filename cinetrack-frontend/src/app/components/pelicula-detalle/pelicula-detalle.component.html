@@ -1,56 +1,60 @@
 <div *ngIf="pelicula">
-  <button type="button" (click)="volver()" style="background: none; border: none; color: #007bff; cursor: pointer; padding: 0; margin-bottom: 15px;">
-    ← Volver al catálogo
-  </button>
+  <button type="button" class="back-link" (click)="volver()">← Volver al catálogo</button>
 
-  <div style="display: flex; gap: 20px; background-color: #ffffff; border: 1px solid #ccc; border-radius: 8px; padding: 20px;">
-    <img [src]="pelicula.imagenUrl || 'https://via.placeholder.com/200x300'" style="width: 200px; height: 300px; object-fit: cover; border-radius: 6px; flex-shrink: 0;">
+  <div class="detail-card">
+    <img class="detail-poster" [src]="pelicula.imagenUrl || 'https://via.placeholder.com/220x320'">
 
-    <div style="flex: 1;">
-      <h2>{{ pelicula.titulo }} ({{ pelicula.anio }})</h2>
-      <p><strong>Género:</strong> {{ pelicula.genero }}</p>
-      <p><strong>Sinopsis:</strong> {{ pelicula.sinopsis }}</p>
-      <p><strong>Mi reseña:</strong> {{ pelicula.resenaPersonal }}</p>
-      <p><strong>Estado:</strong> <span style="font-weight: bold; color: #007bff;">{{ pelicula.estado }}</span></p>
-      <p><strong>Calificación:</strong> ⭐ {{ pelicula.calificacionPersonal }} / 5.0</p>
+    <div class="detail-info">
+      <h2 class="detail-title">{{ pelicula.titulo }} ({{ pelicula.anio }})</h2>
+      <span class="movie-card__badge">{{ pelicula.estado }}</span>
 
-      <div style="display: flex; gap: 8px; margin-top: 15px;">
-        <button (click)="editarPelicula()" style="background-color: #ffc107; color: black; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">✏️ Editar</button>
-        <button (click)="eliminarPelicula()" style="background-color: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">🗑️ Eliminar</button>
+      <p class="detail-meta"><strong>Género:</strong> {{ pelicula.genero }}</p>
+      <p class="detail-meta"><strong>Calificación:</strong> {{ pelicula.calificacionPersonal }} / 5.0</p>
+      <p class="detail-meta"><strong>Sinopsis:</strong> {{ pelicula.sinopsis }}</p>
+
+      <div class="detail-resena" *ngIf="pelicula.resenaPersonal">
+        <span class="detail-resena__label">Mi reseña</span>
+        <p class="detail-resena__text">"{{ pelicula.resenaPersonal }}"</p>
+      </div>
+
+      <div class="detail-actions">
+        <button class="btn btn-warning btn-sm" (click)="editarPelicula()">Editar</button>
+        <button class="btn btn-danger btn-sm" (click)="eliminarPelicula()">Eliminar</button>
       </div>
     </div>
   </div>
 
-  <div style="margin-top: 25px;">
-    <h3>📝 Reseñas</h3>
+  <div class="resenas-section">
+    <h3 class="subsection-title">Reseñas</h3>
 
-    <div *ngFor="let r of resenas" style="background-color: #f8f9fa; padding: 10px; border-radius: 6px; margin-bottom: 8px;">
-      <strong>⭐ {{ r.calificacion }}/5</strong> — {{ r.fecha }}
-      <p style="margin: 4px 0 0 0;">{{ r.descripcion }}</p>
-      <button type="button" (click)="eliminarResena(r.id)" style="background: none; border: none; color: #dc3545; cursor: pointer; font-size: 12px; padding: 0; margin-top: 4px;">
-        Eliminar reseña
-      </button>
+    <div class="resena-card" *ngFor="let r of resenas">
+      <div class="resena-card__top">
+        <span class="resena-card__score">{{ r.calificacion }}/5</span>
+        <span class="resena-card__fecha">{{ r.fecha }}</span>
+      </div>
+      <p class="resena-card__desc">{{ r.descripcion }}</p>
+      <button type="button" class="resena-card__delete" (click)="eliminarResena(r.id)">Eliminar reseña</button>
     </div>
 
-    <p *ngIf="resenas.length === 0" style="color: #888;">Aún no hay reseñas.</p>
+    <p *ngIf="resenas.length === 0" class="loading-text">Aún no hay reseñas.</p>
 
-    <button *ngIf="!mostrandoFormResena" type="button" (click)="mostrarFormResena()" style="background-color: #6f42c1; color: white; border: none; padding: 8px 14px; border-radius: 4px; cursor: pointer;">
+    <button *ngIf="!mostrandoFormResena" type="button" class="btn btn-primary btn-sm" (click)="mostrarFormResena()">
       + Agregar reseña
     </button>
 
-    <div *ngIf="mostrandoFormResena" style="margin-top: 10px; background-color: #fff3cd; padding: 12px; border-radius: 6px; max-width: 350px;">
-      <label>Calificación:</label>
-      <input type="number" step="0.5" min="1" max="5" [(ngModel)]="nuevaResena.calificacion" name="calResena" style="width: 100%; padding: 5px; margin-bottom: 8px;">
+    <div *ngIf="mostrandoFormResena" class="resena-form">
+      <label>Calificación</label>
+      <input type="number" step="0.5" min="1" max="5" [(ngModel)]="nuevaResena.calificacion" name="calResena">
 
-      <label>Fecha:</label>
-      <input type="date" [(ngModel)]="nuevaResena.fecha" name="fechaResena" style="width: 100%; padding: 5px; margin-bottom: 8px;">
+      <label>Fecha</label>
+      <input type="date" [(ngModel)]="nuevaResena.fecha" name="fechaResena">
 
-      <label>Descripción:</label>
-      <textarea [(ngModel)]="nuevaResena.descripcion" name="descResena" rows="3" style="width: 100%; padding: 5px; margin-bottom: 8px;"></textarea>
+      <label>Descripción</label>
+      <textarea [(ngModel)]="nuevaResena.descripcion" name="descResena" rows="3"></textarea>
 
-      <div style="display: flex; gap: 8px;">
-        <button type="button" (click)="guardarResena()" style="background-color: #28a745; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">Guardar</button>
-        <button type="button" (click)="mostrandoFormResena = false" style="background-color: #6c757d; color: white; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer;">Cancelar</button>
+      <div class="resena-form__actions">
+        <button type="button" class="btn btn-primary btn-sm" (click)="guardarResena()">Guardar</button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="mostrandoFormResena = false">Cancelar</button>
       </div>
     </div>
   </div>

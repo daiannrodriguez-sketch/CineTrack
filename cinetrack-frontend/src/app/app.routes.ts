@@ -5,12 +5,10 @@ import { PeliculaDetalleComponent } from './components/pelicula-detalle/pelicula
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'peliculas', pathMatch: 'full' },
-  { path: 'peliculas', component: PeliculaListComponent },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'peliculas', component: PeliculaListComponent },
   { path: 'peliculas/nueva', component: PeliculaFormComponent },
   { path: 'peliculas/:id/editar', component: PeliculaFormComponent },
-  { path: 'peliculas/:id', component: PeliculaDetalleComponent },
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-{ path: 'dashboard', component: DashboardComponent },
+  { path: 'peliculas/:id', component: PeliculaDetalleComponent }
 ];

@@ -56,7 +56,7 @@ export class PeliculaDetalleComponent implements OnInit {
         this.cdr.markForCheck();
       },
       error: () => {
-        this.notificacionService.mostrar('❌ No se encontró esa película');
+        this.notificacionService.mostrar('❌ No se encontró esa película', 'error');
         this.router.navigate(['/peliculas']);
       }
     });
@@ -108,7 +108,7 @@ export class PeliculaDetalleComponent implements OnInit {
         this.cargarResenas();
       },
       error: () => {
-        this.notificacionService.mostrar('❌ Error al guardar la reseña');
+        this.notificacionService.mostrar('❌ Error al guardar la reseña. Revisa tu conexión con el servidor.', 'error');
         this.cdr.markForCheck();
       }
     });

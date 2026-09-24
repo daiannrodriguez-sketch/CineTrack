@@ -1,11 +1,7 @@
-<div style="padding: 20px; font-family: sans-serif; max-width: 900px; margin: 0 auto;">
-
-  <h1>🎬 CineTrack - Catálogo de Películas</h1>
-  <p style="color: green;"><strong>Backend status:</strong> Conectado a http://localhost:8080/peliculas</p>
-
+<div class="app-shell">
   <app-navbar></app-navbar>
-  <app-notificacion-banner></app-notificacion-banner>
-
-  <router-outlet></router-outlet>
-
+  <div class="page-container">
+    <app-notificacion-banner></app-notificacion-banner>
+    <router-outlet></router-outlet>
+  </div>
 </div>

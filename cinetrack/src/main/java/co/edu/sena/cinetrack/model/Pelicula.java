@@ -14,7 +14,6 @@ public class Pelicula {
     @NotBlank(message = "El título es obligatorio")
     private String titulo;
 
-    private String director;
     private String genero;
     private String resenaPersonal;
     private int anio;

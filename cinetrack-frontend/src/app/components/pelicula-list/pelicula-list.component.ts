@@ -18,19 +18,26 @@ export class PeliculaListComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
 
   peliculas: Pelicula[] = [];
+  cargando = true;
+  backendCaido = false;
 
   ngOnInit(): void {
     this.cargarPeliculas();
   }
 
   cargarPeliculas(): void {
+    this.cargando = true;
+    this.backendCaido = false;
     this.peliculaService.listar().subscribe({
       next: (datos) => {
         this.peliculas = datos;
+        this.cargando = false;
         this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error conectando con Spring Boot:', err);
+        this.cargando = false;
+        this.backendCaido = true;
         this.cdr.markForCheck();
       }
     });
@@ -57,6 +64,7 @@ export class PeliculaListComponent implements OnInit {
         },
         error: () => {
           console.error('Error al eliminar');
+          this.notificacionService.mostrar('❌ No se pudo eliminar. Revisa tu conexión con el servidor.', 'error');
           this.cdr.markForCheck();
         }
       });
